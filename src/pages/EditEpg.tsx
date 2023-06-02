@@ -23,6 +23,7 @@ import {
   Info,
   Menu,
   MoreVertical,
+  Plus,
   Save,
   Table2,
   Trash,
@@ -58,6 +59,16 @@ import {
 } from '../components/ui/card';
 import { Label } from '../components/ui/label';
 import { Input } from '../components/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../components/ui/dropdown-menu';
+import { cn } from '../lib/utils';
 
 interface Row {
   startTime: string;
@@ -200,17 +211,46 @@ function CustomTab() {
   ]);
 
   return (
-    <Tabs defaultValue='account' className='w-full'>
+    <Tabs defaultValue='aug1' className='w-full'>
       <div className='flex m-5 justify-between items-center'>
         <TabsList className='flex'>
-          <TabsTrigger value='aug1'>Aug 1st</TabsTrigger>
-          <TabsTrigger value='aug2'>Aug 2nd</TabsTrigger>
+          <TabsTrigger className='px-10' value='aug1'>
+            Aug 1st
+          </TabsTrigger>
+          <TabsTrigger className='px-10' value='aug2'>
+            Aug 2nd
+          </TabsTrigger>
+          <TabsTrigger className='px-10' value='aug3'>
+            Aug 3nd
+          </TabsTrigger>
+          <TabsTrigger className='px-10' value='aug4'>
+            Aug 4nd
+          </TabsTrigger>
         </TabsList>
         <div className=''>
-          <Button variant='outline' className='w-10 rounded-full p-0'>
-            <MoreVertical className='h-4 w-4' />
-            <span className='sr-only'>Add</span>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant='outline' className='w-10 rounded-full p-0'>
+                <MoreVertical className='h-4 w-4' />
+                <span className='sr-only'>Add</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className='w-56'>
+              <DropdownMenuLabel>More Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem inset>Clear Tab</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Trash className='mr-2 h-4 w-4 text-red-600' />
+                  <span className='text-red-600'>Delete Tab</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Plus className='mr-2 h-4 w-4 ' />
+                  <span className=''>Add New Tab</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <TabsContent value='aug1'>
@@ -230,6 +270,7 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
     //ctrl + click update rows to be selected
     //shift + click update rows to be selected
     //click update single row to be selected and un select all other rows
+    e.stopPropagation();
     setLastSelectedRow(index);
     if (e.ctrlKey) {
       console.log('ctrl key pressed');
@@ -278,8 +319,19 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
     console.log('click');
   };
 
+  const unSelectAllRows = (e: any) => {
+    //stop propagation
+
+    setRows((prevRows) => {
+      const newRows = prevRows.map((row) => {
+        row.selected = false;
+        return row;
+      });
+      return newRows;
+    });
+  };
   return (
-    <main className='border-2 p-5 rounded-md m-5'>
+    <main className='border-2 p-5 rounded-md m-5' onClick={unSelectAllRows}>
       <Table>
         <TableCaption>Epg table for Aug 10th</TableCaption>
         <TableHeader>
@@ -302,7 +354,10 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
             <TableRow
               onClick={(e) => selectRow(e, index)}
               key={index}
-              className={row.selected ? 'bg-muted/90' : ''}>
+              className={cn(
+                index % 2 === 0 ? 'bg-secondary/20' : '',
+                row.selected ? 'bg-green-500 hover:bg-green-500' : ''
+              )}>
               <TableCell>
                 <ToolTipCustom tooltip='Edit Start Time'>
                   <div className='flex gap-1 bg-muted p-2 rounded-md'>
@@ -395,7 +450,6 @@ function CustomContextMenuForEPG() {
               <Trash className='mr-2 h-4 w-4 text-red-600' />
               <span className=' text-red-600'> Delete Current Tab</span>
             </ContextMenuItem>
-            <ContextMenuItem>Name Window...</ContextMenuItem>
             {/* <ContextMenuSeparator /> */}
             {/* <ContextMenuItem>Developer Tools</ContextMenuItem> */}
           </ContextMenuSubContent>
@@ -420,10 +474,13 @@ function CustomContextMenuForEPG() {
         <ContextMenuSeparator />
 
         <ContextMenuItem inset>Select All</ContextMenuItem>
+
         <ContextMenuItem>
           <Trash className='mr-2 h-4 w-4 text-red-600' />
           <span className=' text-red-600'> Delete Selected Rows</span>
         </ContextMenuItem>
+        <ContextMenuItem inset>Add Row Above</ContextMenuItem>
+        <ContextMenuItem inset>Add Row Below</ContextMenuItem>
         {/* <ContextMenuSeparator />
     <ContextMenuCheckboxItem checked>
       Show Bookmarks Bar

@@ -5,9 +5,9 @@ import EditEpg from './pages/EditEpg';
 
 function App() {
   return (
-    <div className='h-screen w-screen'>
+    <div className='h-screen w-screen overflow-x-hidden'>
       <NavBar />
-      <main>
+      <main className='max-w-full'>
         <BrowserRouter>
           <Routes>
             <Route path='/epg/*' element={<Epg />} />
