@@ -356,7 +356,9 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
               key={index}
               className={cn(
                 index % 2 === 0 ? 'bg-secondary/20' : '',
-                row.selected ? 'bg-green-500 hover:bg-green-500' : ''
+                row.selected
+                  ? 'dark:bg-green-900 dark:hover:bg-green-900 bg-green-200 hover:bg-green-200'
+                  : ''
               )}>
               <TableCell>
                 <ToolTipCustom tooltip='Edit Start Time'>

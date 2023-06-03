@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { LogOut, Moon, Sun } from 'lucide-react';
+import { LogOut, Moon, Save, Sun, Upload } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import {
   Menubar,
@@ -27,9 +27,38 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from '../ui/menubar';
+import { Button } from '../ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
+import { AlertDialogHeader } from '../ui/alert-dialog';
+import { Label } from '@radix-ui/react-menubar';
+import { Input } from '../ui/input';
 export default function NavBar() {
   const [currentTheme, setCurrentTheme] = useState('dark');
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDraggingOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDraggingOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDraggingOver(false);
+    const files = Array.from(e.dataTransfer.files);
+    // Process the dropped files
+    console.log(files);
+  };
   const setTheme = (theme: string) => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -145,6 +174,47 @@ export default function NavBar() {
         </Menubar> */}
       </div>
       <div className='flex items-center gap-3'>
+        <div>
+          <Dialog>
+            <DialogTrigger>
+              <Button>
+                <Upload className='w-4 h-4 mr-2' />
+                <span> Upload</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className='w-[60vw]'>
+              <AlertDialogHeader>
+                <DialogTitle>Upload Master File</DialogTitle>
+                <DialogDescription>
+                  Data from this file will be added to database.
+                </DialogDescription>
+              </AlertDialogHeader>
+
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`border-2 border-dashed rounded-md border-gray-400 bg-muted p-4 h-44 flex items-center justify-center ${
+                  isDraggingOver ? 'bg-muted/60' : ''
+                }`}>
+                <p className='text-center'>Drag and drop files here</p>
+              </div>
+
+              <DialogFooter>
+                <Button variant='secondary' className='relative'>
+                  <Input
+                    type='file'
+                    className='absolute inset-0 opacity-0 z-10'
+                  />
+                  <Upload className='w-3 h-3 mr-2' /> <span>Upload File</span>
+                </Button>
+                <Button type='submit'>
+                  <Save className='w-3 h-3 mr-2' /> <span>Save</span>{' '}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Moon className='h-7 w-7' />
