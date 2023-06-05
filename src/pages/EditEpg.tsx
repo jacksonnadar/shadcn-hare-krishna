@@ -509,10 +509,10 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                 <TableHead className='w-96'>Program</TableHead>
                 {/* <TableHead>File Name</TableHead> */}
                 <TableHead>Fillers</TableHead>
-                <TableHead>Time remaining</TableHead>
+                <TableHead>Time</TableHead>
                 <TableHead>Scroll Details</TableHead>
                 <TableHead>Episode Title</TableHead>
-                <TableHead>Start Cast</TableHead>
+                <TableHead>Cast</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
