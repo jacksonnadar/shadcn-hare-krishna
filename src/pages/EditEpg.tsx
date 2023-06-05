@@ -16,6 +16,14 @@ import {
 } from '../components/ui/tooltip';
 import { Button } from '../components/ui/button';
 import {
+  ArrowDown,
+  ArrowUp,
+  Calendar,
+  CalendarCheck2,
+  CalendarDays,
+  Check,
+  ChevronsUpDown,
+  Cross,
   Delete,
   Download,
   Edit,
@@ -24,9 +32,12 @@ import {
   Menu,
   MoreVertical,
   Plus,
+  PlusCircle,
   Save,
   Table2,
   Trash,
+  X,
+  XCircle,
 } from 'lucide-react';
 import {
   ContextMenu,
@@ -73,6 +84,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from '../components/ui/dialog';
@@ -89,6 +101,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../components/ui/popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '../components/ui/command';
+import { Separator } from '../components/ui/separator';
+import {
+  ScrollArea,
+  ScrollAreaH,
+  ScrollBar,
+} from '../components/ui/scroll-area';
 
 interface Row {
   startTime: string;
@@ -106,7 +136,11 @@ interface Row {
 }
 
 export default function EditEpg() {
-  return <CustomContextMenuForEPG />;
+  return (
+    <ScrollArea type='auto' className='w-full h-[calc(100vh-3.5rem)]'>
+      <CustomContextMenuForEPG />
+    </ScrollArea>
+  );
 }
 
 function ToolTipCustom({
@@ -120,7 +154,7 @@ function ToolTipCustom({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent className=''>
           <p>{tooltip}</p>
         </TooltipContent>
       </Tooltip>
@@ -133,98 +167,98 @@ function CustomTab() {
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
@@ -232,98 +266,98 @@ function CustomTab() {
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
     {
       startTime: '00:00:00',
       endTime: '00:00:00',
-      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Program',
+      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
       scrollDetails: 'Scroll Details',
       fileName: 'File Name',
-      filler: 'Filler',
+      filler: '2 Fillers / 3 Promos',
       timeRemaining: '00:00:00',
       episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Star Cast',
+      starCast: 'Gauranga Priya Das',
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
@@ -332,20 +366,26 @@ function CustomTab() {
   return (
     <Tabs defaultValue='aug1' className='w-full'>
       <div className='flex m-4 justify-between items-center h-10'>
-        <TabsList className='flex'>
-          <TabsTrigger className='px-10' value='aug1'>
-            Aug 1st
-          </TabsTrigger>
-          <TabsTrigger className='px-10' value='aug2'>
-            Aug 2nd
-          </TabsTrigger>
-          <TabsTrigger className='px-10' value='aug3'>
-            Aug 3nd
-          </TabsTrigger>
-          <TabsTrigger className='px-10' value='aug4'>
-            Aug 4nd
-          </TabsTrigger>
-        </TabsList>
+        <div className='flex items-center gap-3'>
+          <TabsList className='flex'>
+            <TabsTrigger className='px-10' value='aug1'>
+              Aug 1st
+            </TabsTrigger>
+            <TabsTrigger className='px-10' value='aug2'>
+              Aug 2nd
+            </TabsTrigger>
+            <TabsTrigger className='px-10' value='aug3'>
+              Aug 3nd
+            </TabsTrigger>
+            <TabsTrigger className='px-10' value='aug4'>
+              Aug 4nd
+            </TabsTrigger>
+          </TabsList>
+          <Button className='w-8 h-8 rounded-full p-0'>
+            <PlusCircle className='h-4 w-4' />
+          </Button>
+        </div>
+
         <div className=''>
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -362,6 +402,10 @@ function CustomTab() {
                 <DropdownMenuItem>
                   <Trash className='mr-2 h-4 w-4 text-red-600' />
                   <span className='text-red-600'>Delete Tab</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <CalendarDays className='mr-2 h-4 w-4 ' />
+                  <span className=''>Edit Date</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Plus className='mr-2 h-4 w-4 ' />
@@ -450,77 +494,257 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
     });
   };
   return (
-    <main className='border-2 p-5 rounded-md m-5' onClick={unSelectAllRows}>
-      <Table>
-        <TableCaption>Epg table for Aug 10th</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className='w-[100px]'>Start Time</TableHead>
-            <TableHead className='w-[100px]'>End Time</TableHead>
-            <TableHead>Next</TableHead>
-            <TableHead>Program</TableHead>
-            <TableHead>Scroll Details</TableHead>
-            <TableHead>File Name</TableHead>
-            <TableHead>Filler</TableHead>
-            <TableHead>Time remaining</TableHead>
-            <TableHead>Episode Title</TableHead>
-            <TableHead>Star cast</TableHead>
-            <TableHead>Scte On Fillers</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {rows.map((row, index) => (
-            <TableRow
-              onClick={(e) => selectRow(e, index)}
-              key={index}
-              className={cn(
-                index % 2 === 0 ? 'bg-secondary/20' : '',
-                row.selected
-                  ? 'dark:bg-green-900 dark:hover:bg-green-900 bg-green-200 hover:bg-green-200'
-                  : ''
-              )}>
-              <TableCell>
-                <CustomDialogForTime time={row.startTime}></CustomDialogForTime>
-              </TableCell>
-              <TableCell>
-                {/* <ToolTipCustom tooltip='Edit End Time'>
-                  <div className='flex gap-1 bg-muted p-2 rounded-md'>
-                    {row.endTime}
-                    <Button
-                      variant='outline'
-                      className='w-6 h-6 rounded-full p-0'>
-                      <Edit2 className='h-3 w-3' />
-                      <span className='sr-only'>Add</span>
-                    </Button>
-                  </div>
-                </ToolTipCustom> */}
-              </TableCell>
-              <TableCell>
+    <div className='p-5  w-[100vw]'>
+      <main
+        onClick={unSelectAllRows}
+        className='border-2 p-5 pt-0 rounded-md w-full'>
+        <ScrollAreaH className='pb-3'>
+          <Table>
+            <TableCaption>Epg table for Aug 10th</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead className='w-[100px]'>Start Time</TableHead>
+                <TableHead className='w-[100px]'>End Time</TableHead>
+                {/* <TableHead>Next</TableHead> */}
+                <TableHead className='w-96'>Program</TableHead>
+                {/* <TableHead>File Name</TableHead> */}
+                <TableHead>Fillers</TableHead>
+                <TableHead>Time remaining</TableHead>
+                <TableHead>Scroll Details</TableHead>
+                <TableHead>Episode Title</TableHead>
+                <TableHead>Start Cast</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {rows.map((row, index) => (
+                <TableRow
+                  onClick={(e) => selectRow(e, index)}
+                  key={index}
+                  className={cn(
+                    index % 2 === 0 ? 'bg-secondary/20' : '',
+                    row.selected ? ' bg-secondary hover:bg-secondary/30' : ''
+                  )}>
+                  <TableCell>
+                    <CustomDialogForTime
+                      time={row.startTime}></CustomDialogForTime>
+                  </TableCell>
+                  <TableCell>
+                    <CustomDialogForTime
+                      time={row.endTime}></CustomDialogForTime>
+                  </TableCell>
+                  {/* <TableCell>
                 <ToolTipCustom tooltip={row.next}>
                   <div className='truncate w-32'>{row.next}</div>
                 </ToolTipCustom>
-              </TableCell>
-              <TableCell>
-                <ToolTipCustom tooltip={row.program}>
-                  <div className='truncate w-32'>{row.program}</div>
-                </ToolTipCustom>
-              </TableCell>
-              <TableCell>{row.scrollDetails}</TableCell>
-              <TableCell>{row.fileName}</TableCell>
-              <TableCell>{row.filler}</TableCell>
-              <TableCell>{row.timeRemaining}</TableCell>
-              <TableCell>
-                <ToolTipCustom tooltip={row.episodeTitle}>
-                  <div className='truncate w-32'>{row.episodeTitle}</div>
-                </ToolTipCustom>
-              </TableCell>
-              <TableCell>{row.starCast}</TableCell>
-              <TableCell>{row.scteOnFillers}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </main>
+              </TableCell> */}
+                  <TableCell>
+                    <div className='flex gap-2'>
+                      <ToolTipCustom tooltip={row.program}>
+                        <div className='truncate w-80'>{row.program}</div>
+                      </ToolTipCustom>
+                      <ToolTipCustom tooltip='Add Program'>
+                        <CustomProgramSearchDialog />
+                      </ToolTipCustom>
+                    </div>
+                  </TableCell>
+                  {/* <TableCell>{row.fileName}</TableCell> */}
+                  <TableCell className=''>
+                    <div className='flex gap-2 items-center min-w-[12rem]'>
+                      <span className='flex gap-1 bg-muted p-2 rounded-md'>
+                        {row.filler}
+                      </span>
+                      <ToolTipCustom tooltip='Add Program'>
+                        <CustomProgramSearchDialog />
+                      </ToolTipCustom>
+                      {/* <Button className='w-6 h-6 rounded-full p-0'>
+                        <Edit2 className='h-4 w-4' />
+                      </Button> */}
+                    </div>
+                  </TableCell>
+                  <TableCell>{row.timeRemaining}</TableCell>
+                  <TableCell>
+                    <Input className='w-40 py-0' />
+                  </TableCell>
+                  <TableCell>
+                    <ToolTipCustom tooltip={row.episodeTitle}>
+                      <div className='truncate w-32'>{row.episodeTitle}</div>
+                    </ToolTipCustom>
+                  </TableCell>
+                  <TableCell>{row.starCast}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollAreaH>
+      </main>
+    </div>
+  );
+}
+
+const frameworks = [
+  {
+    value: 'next.js',
+    label: 'Next.js',
+  },
+  {
+    value: 'sveltekit',
+    label: 'SvelteKit',
+  },
+  {
+    value: 'nuxt.js',
+    label: 'Nuxt.js',
+  },
+  {
+    value: 'remix',
+    label: 'Remix',
+  },
+  {
+    value: 'astro',
+    label: 'Astro',
+  },
+];
+
+function CustomProgramSearchDialog() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        onClick={() => setIsOpen(true)}
+        className='w-6 h-6 rounded-full p-0'>
+        <Plus className='h-4 w-4' />
+      </Button>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className='w-[800px]'>
+          <AlertDialogHeader>
+            <DialogTitle>Search Program</DialogTitle>
+            <DialogDescription>
+              Search program and add to the row{' '}
+            </DialogDescription>
+          </AlertDialogHeader>
+          <div className='grid grid-cols-2 gap-4'>
+            <CustomSearchComboBox
+              searchLabel='Category'
+              keyValuePairs={frameworks}
+            />
+            <CustomSearchComboBox
+              searchLabel='Sub Category'
+              keyValuePairs={frameworks}
+            />
+            <CustomSearchComboBox
+              searchLabel='Speaker'
+              keyValuePairs={frameworks}
+            />
+            <CustomSearchComboBox
+              searchLabel='Language'
+              keyValuePairs={frameworks}
+            />
+            <div className='flex gap-3'>
+              <Input placeholder='Duration' className='w-[60%]' type='tel' />
+              <Select defaultValue='Seconds'>
+                <SelectTrigger className=''>
+                  <SelectValue placeholder='Unit' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Unit</SelectLabel>
+                    <SelectItem value='Seconds'>Seconds</SelectItem>
+                    <SelectItem value='Minutes'>Minutes</SelectItem>
+                    <SelectItem value='Hours'>Hours</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <Separator />
+          <AlertDialogHeader>
+            <DialogTitle>Results Found</DialogTitle>
+          </AlertDialogHeader>
+          {/* <CustomSearchComboBox /> */}
+          <ScrollArea className=' max-h-60'>
+            {Array(10)
+              .fill(0)
+              .map((_, index) => (
+                <div className='flex flex-col gap-3 pt-2 hover:bg-muted'>
+                  <div className='grid grid-cols-4 gap-2 max-w-full cursor-pointer'>
+                    <ToolTipCustom tooltip=' Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das'>
+                      <p className='text-sm truncate col-span-3'>
+                        Matrudin Vishesh - Sabse sundar stri Maa - Gauranga
+                        Priya Das
+                      </p>
+                    </ToolTipCustom>
+                    <p className='font-semibold text-sm truncate col-span-1 text-right'>
+                      00:12:00
+                    </p>
+                  </div>
+                  <Separator />
+                </div>
+              ))}
+          </ScrollArea>
+          <DialogFooter>
+            <Button
+              type='submit'
+              onClick={() => setIsOpen(false)}
+              variant='destructive'>
+              <XCircle className='w-4 h-4 mr-2' /> <span>Close</span>{' '}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function CustomSearchComboBox({
+  keyValuePairs,
+  searchLabel,
+}: {
+  keyValuePairs: { value: string; label: string }[];
+  searchLabel: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant='outline'
+          role='combobox'
+          aria-expanded={open}
+          className='w-full justify-between'>
+          {value
+            ? keyValuePairs.find((keyValuePair) => keyValuePair.value === value)
+                ?.label
+            : `${searchLabel}`}
+          <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className='w-[225px] p-0'>
+        <Command>
+          <CommandInput placeholder={`Search ${searchLabel}...`} />
+          <CommandEmpty>No {searchLabel} found.</CommandEmpty>
+          <CommandGroup>
+            {keyValuePairs.map((keyValuePair) => (
+              <CommandItem
+                key={keyValuePair.value}
+                onSelect={(currentValue) => {
+                  setValue(currentValue === value ? '' : currentValue);
+                  setOpen(false);
+                }}>
+                <Check
+                  className={cn(
+                    'mr-2 h-4 w-4',
+                    value === keyValuePair.value ? 'opacity-100' : 'opacity-0'
+                  )}
+                />
+                {keyValuePair.label}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -695,8 +919,15 @@ function CustomContextMenuForEPG() {
           <Trash className='mr-2 h-4 w-4 text-red-600' />
           <span className=' text-red-600'> Delete Selected Rows</span>
         </ContextMenuItem>
-        <ContextMenuItem inset>Add Row Above</ContextMenuItem>
-        <ContextMenuItem inset>Add Row Below</ContextMenuItem>
+
+        <ContextMenuItem>
+          <ArrowUp className='mr-2 h-4 w-4' />
+          <span className=''>Add Row Above</span>
+        </ContextMenuItem>
+        <ContextMenuItem>
+          <ArrowDown className='mr-2 h-4 w-4' />
+          <span className=''>Add Row Below</span>
+        </ContextMenuItem>
         {/* <ContextMenuSeparator />
     <ContextMenuCheckboxItem checked>
       Show Bookmarks Bar

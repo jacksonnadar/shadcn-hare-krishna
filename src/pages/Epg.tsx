@@ -1,4 +1,5 @@
 import {
+  Archive,
   CalendarIcon,
   Download,
   File,
@@ -63,7 +64,7 @@ import { DateRange } from 'react-day-picker';
 
 export default function Epg() {
   return (
-    <div className='h-full w-full px-36 py-10 flex flex-col gap-6 max-w-full overflow-x-hidden'>
+    <div className='h-full w-full px-36 py-10 flex flex-col gap-6 max-w-full '>
       <div>
         <h1 className='text-xl pb-4'>New EPG & Recent</h1>
         <div className='flex gap-4  flex-wrap'>
@@ -241,6 +242,14 @@ function CustomEpgCardWithMenu({ children }: any) {
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className='w-64'>
+        <ContextMenuItem inset>Open</ContextMenuItem>
+        <ContextMenuItem>
+          <Table2 className='mr-2 h-4 w-4' />
+          <span>Open in new windoew</span>
+        </ContextMenuItem>
+        <ContextMenuItem inset>Rename</ContextMenuItem>
+        <ContextMenuSeparator />
+
         <ContextMenuSub>
           <ContextMenuSubTrigger>
             <Download className='mr-2 h-4 w-4' />
@@ -256,13 +265,10 @@ function CustomEpgCardWithMenu({ children }: any) {
         </ContextMenuSub>
         <ContextMenuSeparator />
 
-        <ContextMenuItem inset>Open</ContextMenuItem>
         <ContextMenuItem>
-          <Table2 className='mr-2 h-4 w-4' />
-          <span>Open in new windoew</span>
+          <Archive className='mr-2 h-4 w-4' />
+          <span className=''> Archive EPG</span>
         </ContextMenuItem>
-        <ContextMenuItem inset>Rename</ContextMenuItem>
-
         <ContextMenuItem>
           <Trash className='mr-2 h-4 w-4 text-red-600' />
           <span className=' text-red-600'> Delete EPG</span>
@@ -305,7 +311,7 @@ function CustomNewEpgCard({ children }: any) {
           </DialogDescription>
         </AlertDialogHeader>
         <Label>Date Range To Select</Label>
-        {/* <Popover>
+        <Popover>
           <PopoverTrigger asChild>
             <Button
               id='date'
@@ -339,7 +345,7 @@ function CustomNewEpgCard({ children }: any) {
               numberOfMonths={2}
             />
           </PopoverContent>
-        </Popover> */}
+        </Popover>
         <Label>EPG Name</Label>
         <Input
           className='w-full justify-start text-left font-normal'
