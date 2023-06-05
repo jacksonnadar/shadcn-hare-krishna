@@ -43,7 +43,7 @@ export default function NavBar() {
   const [currentTheme, setCurrentTheme] = useState('dark');
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: any) => {
     e.preventDefault();
     setIsDraggingOver(true);
   };
@@ -52,7 +52,7 @@ export default function NavBar() {
     setIsDraggingOver(false);
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e: any) => {
     e.preventDefault();
     setIsDraggingOver(false);
     const files = Array.from(e.dataTransfer.files);
