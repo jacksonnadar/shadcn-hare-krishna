@@ -51,7 +51,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '../components/ui/popover';
-import { DateRange } from 'react-day-picker';
 import { addDays, format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import {
@@ -60,6 +59,7 @@ import {
   HoverCardTrigger,
 } from '../components/ui/hover-card';
 import { Badge } from '../components/ui/badge';
+import { DateRange } from 'react-day-picker';
 
 export default function Epg() {
   return (
@@ -162,64 +162,62 @@ function CustomEpgCard({
   onClick?: () => void;
 }) {
   const CustomCard = forwardRef((props, ref) => (
-    <Link to={'/epg/123'}>
-      <Card
-        ref={ref as any}
-        {...props}
-        className={`w-44 h-60 ${
-          type === 'new' ? 'bg-secondary/40' : 'bg-secondary'
-        } relative rounded-sm cursor-pointer transform hover:scale-105 transition duration-300`}>
-        {/* <CardHeader>
+    <Card
+      ref={ref as any}
+      {...props}
+      className={`w-44 h-60 ${
+        type === 'new' ? 'bg-secondary/40' : 'bg-secondary'
+      } relative rounded-sm cursor-pointer transform hover:scale-105 transition duration-300`}>
+      {/* <CardHeader>
     <CardTitle>Notifications</CardTitle>
     <CardDescription>You have 3 unread messages.</CardDescription>
   </CardHeader> */}
-        {type === 'file' && (
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <div className='absolute top-2 right-2 flex items-center justify-center'>
-                <Info className='h-4 w-4 text-primary' />
-              </div>
-            </HoverCardTrigger>
-            <HoverCardContent align='end' className='w-80'>
-              <div className='flex justify-between space-x-4'>
-                <div className='space-y-1'>
-                  <h4 className='text-md font-semibold'>Epg for Aug to 12</h4>
-                  <p className='text-xs'>
-                    Created by Jackson at 12-12-12 12:11:11
-                  </p>
-                  <p className='text-xs'>
-                    Last updated by Jackson at 12-12-12 12:11:11
-                  </p>
-                  <div className='flex items-center pt-2 flex-wrap gap-2'>
-                    {/* <span className='text-xs text-muted-foreground'>
+      {type === 'file' && (
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <div className='absolute top-2 right-2 flex items-center justify-center'>
+              <Info className='h-4 w-4 text-primary' />
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent align='end' className='w-80'>
+            <div className='flex justify-between space-x-4'>
+              <div className='space-y-1'>
+                <h4 className='text-md font-semibold'>Epg for Aug to 12</h4>
+                <p className='text-xs'>
+                  Created by Jackson at 12-12-12 12:11:11
+                </p>
+                <p className='text-xs'>
+                  Last updated by Jackson at 12-12-12 12:11:11
+                </p>
+                <div className='flex items-center pt-2 flex-wrap gap-2'>
+                  {/* <span className='text-xs text-muted-foreground'>
                       Tab: 11th Aug, 12th Aug, 13th Aug, 14th Aug
                     </span> */}
-                    <Badge className='text-xs'>11th Aug</Badge>
-                    <Badge className='text-xs'>12th Aug</Badge>
-                    <Badge className='text-xs'>13th Aug</Badge>
-                    <Badge className='text-xs'>14th Aug</Badge>
-                    <Badge className='text-xs'>15th Aug</Badge>
-                    <Badge className='text-xs'>16th Aug</Badge>
-                  </div>
+                  <Badge className='text-xs'>11th Aug</Badge>
+                  <Badge className='text-xs'>12th Aug</Badge>
+                  <Badge className='text-xs'>13th Aug</Badge>
+                  <Badge className='text-xs'>14th Aug</Badge>
+                  <Badge className='text-xs'>15th Aug</Badge>
+                  <Badge className='text-xs'>16th Aug</Badge>
                 </div>
               </div>
-            </HoverCardContent>
-          </HoverCard>
-        )}
-        <CardContent className='h-44 flex items-center justify-center p-0'>
-          <Icon className='w-20 h-20 text-accent-foreground' />
-        </CardContent>
-        <CardFooter className='p-0 px-3 flex-col flex'>
-          {/* <h2 className='truncate w-40 text-lg text-accent-foreground'>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      )}
+      <CardContent className='h-44 flex items-center justify-center p-0'>
+        <Icon className='w-20 h-20 text-accent-foreground' />
+      </CardContent>
+      <CardFooter className='p-0 px-3 flex-col flex'>
+        {/* <h2 className='truncate w-40 text-lg text-accent-foreground'>
         File name this is
       </h2> */}
-          <h2 className='text-accent-foreground w-full truncate '>{title}</h2>
-          <CardDescription className='text-[0.8rem] w-full leading-4 line-clamp-2 '>
-            {description}
-          </CardDescription>
-        </CardFooter>
-      </Card>
-    </Link>
+        <h2 className='text-accent-foreground w-full truncate '>{title}</h2>
+        <CardDescription className='text-[0.8rem] w-full leading-4 line-clamp-2 '>
+          {description}
+        </CardDescription>
+      </CardFooter>
+    </Card>
   ));
   return (
     <>
@@ -228,9 +226,11 @@ function CustomEpgCard({
           <CustomCard />
         </CustomNewEpgCard>
       ) : (
-        <CustomEpgCardWithMenu>
-          <CustomCard />
-        </CustomEpgCardWithMenu>
+        <Link to='/epg/1'>
+          <CustomEpgCardWithMenu>
+            <CustomCard />
+          </CustomEpgCardWithMenu>
+        </Link>
       )}
     </>
   );
@@ -305,7 +305,7 @@ function CustomNewEpgCard({ children }: any) {
           </DialogDescription>
         </AlertDialogHeader>
         <Label>Date Range To Select</Label>
-        <Popover>
+        {/* <Popover>
           <PopoverTrigger asChild>
             <Button
               id='date'
@@ -339,7 +339,7 @@ function CustomNewEpgCard({ children }: any) {
               numberOfMonths={2}
             />
           </PopoverContent>
-        </Popover>
+        </Popover> */}
         <Label>EPG Name</Label>
         <Input
           className='w-full justify-start text-left font-normal'

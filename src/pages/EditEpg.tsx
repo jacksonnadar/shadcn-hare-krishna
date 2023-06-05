@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -69,6 +69,26 @@ import {
   DropdownMenuTrigger,
 } from '../components/ui/dropdown-menu';
 import { cn } from '../lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '../components/ui/dialog';
+import {
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from '../components/ui/alert-dialog';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '../components/ui/select';
 
 interface Row {
   startTime: string;
@@ -208,11 +228,110 @@ function CustomTab() {
       scteOnFillers: 'Scte On Fillers',
       selected: false,
     },
+
+    {
+      startTime: '00:00:00',
+      endTime: '00:00:00',
+      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Program',
+      scrollDetails: 'Scroll Details',
+      fileName: 'File Name',
+      filler: 'Filler',
+      timeRemaining: '00:00:00',
+      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
+      starCast: 'Star Cast',
+      scteOnFillers: 'Scte On Fillers',
+      selected: false,
+    },
+    {
+      startTime: '00:00:00',
+      endTime: '00:00:00',
+      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Program',
+      scrollDetails: 'Scroll Details',
+      fileName: 'File Name',
+      filler: 'Filler',
+      timeRemaining: '00:00:00',
+      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
+      starCast: 'Star Cast',
+      scteOnFillers: 'Scte On Fillers',
+      selected: false,
+    },
+    {
+      startTime: '00:00:00',
+      endTime: '00:00:00',
+      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Program',
+      scrollDetails: 'Scroll Details',
+      fileName: 'File Name',
+      filler: 'Filler',
+      timeRemaining: '00:00:00',
+      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
+      starCast: 'Star Cast',
+      scteOnFillers: 'Scte On Fillers',
+      selected: false,
+    },
+    {
+      startTime: '00:00:00',
+      endTime: '00:00:00',
+      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Program',
+      scrollDetails: 'Scroll Details',
+      fileName: 'File Name',
+      filler: 'Filler',
+      timeRemaining: '00:00:00',
+      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
+      starCast: 'Star Cast',
+      scteOnFillers: 'Scte On Fillers',
+      selected: false,
+    },
+    {
+      startTime: '00:00:00',
+      endTime: '00:00:00',
+      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Program',
+      scrollDetails: 'Scroll Details',
+      fileName: 'File Name',
+      filler: 'Filler',
+      timeRemaining: '00:00:00',
+      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
+      starCast: 'Star Cast',
+      scteOnFillers: 'Scte On Fillers',
+      selected: false,
+    },
+    {
+      startTime: '00:00:00',
+      endTime: '00:00:00',
+      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Program',
+      scrollDetails: 'Scroll Details',
+      fileName: 'File Name',
+      filler: 'Filler',
+      timeRemaining: '00:00:00',
+      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
+      starCast: 'Star Cast',
+      scteOnFillers: 'Scte On Fillers',
+      selected: false,
+    },
+    {
+      startTime: '00:00:00',
+      endTime: '00:00:00',
+      next: 'Next Program Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
+      program: 'Program',
+      scrollDetails: 'Scroll Details',
+      fileName: 'File Name',
+      filler: 'Filler',
+      timeRemaining: '00:00:00',
+      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
+      starCast: 'Star Cast',
+      scteOnFillers: 'Scte On Fillers',
+      selected: false,
+    },
   ]);
 
   return (
     <Tabs defaultValue='aug1' className='w-full'>
-      <div className='flex m-5 justify-between items-center'>
+      <div className='flex m-4 justify-between items-center h-10'>
         <TabsList className='flex'>
           <TabsTrigger className='px-10' value='aug1'>
             Aug 1st
@@ -230,10 +349,10 @@ function CustomTab() {
         <div className=''>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Button variant='outline' className='w-10 rounded-full p-0'>
+              <div className='w-10 h-10 flex items-center justify-center rounded-full p-0 border border-input hover:bg-accent hover:text-accent-foreground'>
                 <MoreVertical className='h-4 w-4' />
                 <span className='sr-only'>Add</span>
-              </Button>
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56'>
               <DropdownMenuLabel>More Actions</DropdownMenuLabel>
@@ -361,20 +480,10 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                   : ''
               )}>
               <TableCell>
-                <ToolTipCustom tooltip='Edit Start Time'>
-                  <div className='flex gap-1 bg-muted p-2 rounded-md'>
-                    {row.startTime}
-                    <Button
-                      variant='default'
-                      className='w-6 h-6 rounded-full p-0'>
-                      <Edit2 className='h-3 w-3' />
-                      <span className='sr-only'>Add</span>
-                    </Button>
-                  </div>
-                </ToolTipCustom>
+                <CustomDialogForTime time={row.startTime}></CustomDialogForTime>
               </TableCell>
               <TableCell>
-                <ToolTipCustom tooltip='Edit End Time'>
+                {/* <ToolTipCustom tooltip='Edit End Time'>
                   <div className='flex gap-1 bg-muted p-2 rounded-md'>
                     {row.endTime}
                     <Button
@@ -384,7 +493,7 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                       <span className='sr-only'>Add</span>
                     </Button>
                   </div>
-                </ToolTipCustom>
+                </ToolTipCustom> */}
               </TableCell>
               <TableCell>
                 <ToolTipCustom tooltip={row.next}>
@@ -412,6 +521,111 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
         </TableBody>
       </Table>
     </main>
+  );
+}
+
+export function CustomDialogForTime({
+  time,
+}: {
+  children?: ReactNode;
+  time: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  console.log('render');
+
+  return (
+    <>
+      {/* <ToolTipCustom tooltip='Edit Start Time'> */}
+      <div className='flex gap-1 bg-muted p-2 rounded-md'>
+        {time}
+        <Button
+          onClick={() => setIsOpen(true)}
+          variant='outline'
+          className='w-6 h-6 rounded-full p-0'>
+          <Edit2 className='h-3 w-3' />
+          <span className='sr-only'>Add</span>
+        </Button>
+      </div>
+      {/* </ToolTipCustom> */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className='w-[400px]'>
+          <AlertDialogHeader>
+            <DialogTitle>Edit Start Time</DialogTitle>
+            <DialogDescription>
+              Editing will automatically update the time for other rows which
+              could be effected.
+            </DialogDescription>
+          </AlertDialogHeader>
+          <div className='flex justify-between'>
+            <Select>
+              <SelectTrigger className='w-[100px]'>
+                <SelectValue placeholder='Hour' />
+              </SelectTrigger>
+              <SelectContent className='h-48'>
+                <SelectGroup>
+                  <SelectLabel>Hour</SelectLabel>
+                  {[...Array(24)].map((_, i) => (
+                    <SelectItem key={i} value={i + ''}>
+                      {i}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <Select>
+              <SelectTrigger className='w-[100px]'>
+                <SelectValue placeholder='Min' />
+              </SelectTrigger>
+              <SelectContent className='h-48'>
+                <SelectGroup>
+                  <SelectLabel>Minutes</SelectLabel>
+                  {[...Array(60)].map((_, i) => (
+                    <SelectItem key={i} value={i + ''}>
+                      {i}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <Select>
+              <SelectTrigger className='w-[100px]'>
+                <SelectValue placeholder='Sec' />
+              </SelectTrigger>
+              <SelectContent className='h-48'>
+                <SelectGroup>
+                  <SelectLabel>Seconds</SelectLabel>
+                  {[...Array(60)].map((_, i) => (
+                    <SelectItem key={i} value={i + ''}>
+                      {i}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            {/* <Select>
+          <SelectTrigger className='w-[100px]'>
+            <SelectValue placeholder='AM / PM' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>AM / PM</SelectLabel>
+              {['AM', 'PM'].map((_, i) => (
+                <SelectItem key={i} value={i + ''}>
+                  {i}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select> */}
+          </div>
+          <AlertDialogFooter>
+            <Button type='submit'>
+              <Save className='w-3 h-3 mr-2' /> <span>Save</span>{' '}
+            </Button>
+          </AlertDialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 

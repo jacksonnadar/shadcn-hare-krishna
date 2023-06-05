@@ -42,7 +42,7 @@ import { Input } from '../ui/input';
 export default function NavBar() {
   const [currentTheme, setCurrentTheme] = useState('dark');
   const [isDraggingOver, setIsDraggingOver] = useState(false);
-
+  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDraggingOver(true);
@@ -75,6 +75,7 @@ export default function NavBar() {
     const localTheme = localStorage.getItem('theme') ?? 'dark';
     setTheme(localTheme);
   }, []);
+
   return (
     <nav className='shadow border-b-2 h-14  flex justify-between w-screen px-5 py-2'>
       <div className='flex items-center'>
@@ -175,13 +176,13 @@ export default function NavBar() {
       </div>
       <div className='flex items-center gap-3'>
         <div>
-          <Dialog>
-            <DialogTrigger>
-              <Button>
-                <Upload className='w-4 h-4 mr-2' />
-                <span> Upload</span>
-              </Button>
-            </DialogTrigger>
+          <Button onClick={() => setIsUploadDialogOpen(true)}>
+            <Upload className='w-4 h-4 mr-2' />
+            <span> Upload</span>
+          </Button>
+          <Dialog
+            open={isUploadDialogOpen}
+            onOpenChange={setIsUploadDialogOpen}>
             <DialogContent className='w-[60vw]'>
               <AlertDialogHeader>
                 <DialogTitle>Upload Master File</DialogTitle>
@@ -202,7 +203,7 @@ export default function NavBar() {
 
               <DialogFooter>
                 <Button variant='secondary' className='relative'>
-                  <Input
+                  <input
                     type='file'
                     className='absolute inset-0 opacity-0 z-10'
                   />
