@@ -11,7 +11,7 @@ function App() {
       <main className='max-w-full'>
         <BrowserRouter>
           <Routes>
-            <Route path='/epg/*' element={<Epg />} />
+            <Route path='/' element={<Epg />} />
             <Route path='/epg/:id' element={<EditEpg />} />
           </Routes>
         </BrowserRouter>
