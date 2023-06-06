@@ -6,7 +6,7 @@ import { ScrollArea } from './components/ui/scroll-area';
 
 function App() {
   return (
-    <div className='h-screen w-screen overflow-hidden'>
+    <ScrollArea className='h-screen w-screen'>
       <NavBar />
       <main className='max-w-full'>
         <BrowserRouter>
@@ -16,7 +16,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </main>
-    </div>
+    </ScrollArea>
   );
 }
 
