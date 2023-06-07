@@ -295,7 +295,7 @@ function CustomEpgCardWithMenu({ children }: any) {
 }
 
 function CustomNewEpgCard({ children }: any) {
-  const [date, setDate] = useState<DateRange | undefined>({
+  const [date, setDate] = useState<any>({
     from: new Date(2023, 0, 20),
     to: new Date(2023, 0, 21),
   });
@@ -336,14 +336,14 @@ function CustomNewEpgCard({ children }: any) {
             </Button>
           </PopoverTrigger>
           <PopoverContent className='w-auto p-0' align='start'>
-            <Calendar
+            {/* <Calendar
               initialFocus
               mode='range'
               defaultMonth={date?.from}
               selected={date}
               onSelect={setDate}
               numberOfMonths={2}
-            />
+            /> */}
           </PopoverContent>
         </Popover>
         <Label>EPG Name</Label>

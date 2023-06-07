@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, forwardRef, useRef } from 'react';
 import {
   Table,
   TableBody,
@@ -18,8 +18,6 @@ import { Button } from '../components/ui/button';
 import {
   ArrowDown,
   ArrowUp,
-  Calendar,
-  CalendarCheck2,
   CalendarDays,
   Check,
   ChevronsUpDown,
@@ -60,14 +58,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '../components/ui/tabs';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '../components/ui/card';
+
 import { Label } from '../components/ui/label';
 import { Input } from '../components/ui/input';
 import {
@@ -119,6 +110,7 @@ import {
   ScrollAreaH,
   ScrollBar,
 } from '../components/ui/scroll-area';
+import { HotKeys } from 'react-hotkeys';
 
 interface Row {
   startTime: string;
@@ -363,66 +355,127 @@ function CustomTab() {
     },
   ]);
 
-  return (
-    <Tabs defaultValue='aug1' className='w-full'>
-      <div className='flex m-4 justify-between items-center h-10'>
-        <div className='flex items-center gap-3'>
-          <TabsList className='flex'>
-            <TabsTrigger className='px-10' value='aug1'>
-              Aug 1st
-            </TabsTrigger>
-            <TabsTrigger className='px-10' value='aug2'>
-              Aug 2nd
-            </TabsTrigger>
-            <TabsTrigger className='px-10' value='aug3'>
-              Aug 3nd
-            </TabsTrigger>
-            <TabsTrigger className='px-10' value='aug4'>
-              Aug 4nd
-            </TabsTrigger>
-          </TabsList>
-          <Button className='w-8 h-8 rounded-full p-0'>
-            <PlusCircle className='h-4 w-4' />
-          </Button>
-        </div>
+  const [tabs, setTabs] = useState([
+    {
+      label: 'Aug 1st',
+      value: 'aug1',
+    },
+    {
+      label: 'Aug 2nd',
+      value: 'aug2',
+    },
+    {
+      label: 'Aug 3rd',
+      value: 'aug3',
+    },
+    {
+      label: 'Aug 4th',
+      value: 'aug4',
+    },
+    {
+      label: 'Aug 5th',
+      value: 'aug5',
+    },
+    {
+      label: 'Aug 6th',
+      value: 'aug6',
+    },
+  ]);
+  const tabRef = useRef<HTMLButtonElement>(null);
+  const [tabValue, setTabValue] = useState('aug1');
+  const keyMap = {
+    NEXT_TAB: 'ctrl+]',
+    PREVIOUS_TAB: 'ctrl+[',
+    FIRST_TAB: 'ctrl+shift+[',
+    LAST_TAB: 'ctrl+shift+]',
+  };
 
-        <div className=''>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className='w-10 h-10 flex items-center justify-center rounded-full p-0 border border-input hover:bg-accent hover:text-accent-foreground'>
-                <MoreVertical className='h-4 w-4' />
-                <span className='sr-only'>Add</span>
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-56'>
-              <DropdownMenuLabel>More Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem inset>Clear Tab</DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Trash className='mr-2 h-4 w-4 text-red-600' />
-                  <span className='text-red-600'>Delete Tab</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CalendarDays className='mr-2 h-4 w-4 ' />
-                  <span className=''>Edit Date</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Plus className='mr-2 h-4 w-4 ' />
-                  <span className=''>Add New Tab</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+  const handlers = {
+    NEXT_TAB: () => {
+      setTabValue((prevTabValue) => {
+        const tabIndex = tabs.findIndex((tab) => tab.value === prevTabValue);
+        const newValue = tabs.at(tabIndex + 1)?.value;
+        tabRef.current?.focus();
+        return newValue ?? tabs.at(0)?.value ?? '';
+      });
+    },
+    PREVIOUS_TAB: () => {
+      setTabValue((prevTabValue) => {
+        const tabIndex = tabs.findIndex((tab) => tab.value === prevTabValue);
+        tabRef.current?.focus();
+
+        return tabs.at(tabIndex - 1)?.value ?? '';
+      });
+    },
+    FIRST_TAB: () => {
+      tabRef.current?.focus();
+      setTabValue(() => tabs.at(0)?.value ?? '');
+    },
+
+    LAST_TAB: () => {
+      tabRef.current?.focus();
+      setTabValue(() => tabs.at(-1)?.value ?? '');
+    },
+  };
+
+  return (
+    <HotKeys keyMap={keyMap} handlers={handlers} unselectable='on'>
+      <Tabs value={tabValue} onValueChange={setTabValue} className='w-full'>
+        <div className='flex m-4 justify-between items-center gap-3'>
+          <div className='flex items-center gap-3'>
+            <TabsList className='flex'>
+              {tabs.map((tab) => (
+                <TabsTrigger
+                  ref={tabRef}
+                  className='px-10'
+                  value={tab.value}
+                  key={tab.value}>
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <Button className='min-w-[2rem] h-8 rounded-full p-0'>
+              <PlusCircle className='h-4 w-4' />
+            </Button>
+          </div>
+
+          <div className=''>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className='w-10 h-10 flex items-center justify-center rounded-full p-0 border border-input hover:bg-accent hover:text-accent-foreground'>
+                  <MoreVertical className='h-4 w-4' />
+                  <span className='sr-only'>Add</span>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className='w-56'>
+                <DropdownMenuLabel>More Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem inset>Clear Tab</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Trash className='mr-2 h-4 w-4 text-red-600' />
+                    <span className='text-red-600'>Delete Tab</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <CalendarDays className='mr-2 h-4 w-4 ' />
+                    <span className=''>Edit Date</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Plus className='mr-2 h-4 w-4 ' />
+                    <span className=''>Add New Tab</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
-      <TabsContent value='aug1'>
-        <CustomEpgTable epgRows={rows} />
-      </TabsContent>
-      <TabsContent value='aug2'>
-        <CustomEpgTable epgRows={rows} />
-      </TabsContent>
-    </Tabs>
+        {tabs.map((tab) => (
+          <TabsContent value={tab.value} key={tab.value}>
+            <CustomEpgTable epgRows={rows} />
+          </TabsContent>
+        ))}
+      </Tabs>
+    </HotKeys>
   );
 }
 
@@ -436,8 +489,6 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
     e.stopPropagation();
     setLastSelectedRow(index);
     if (e.ctrlKey) {
-      console.log('ctrl key pressed');
-
       const newRows = structuredClone(rows);
       newRows[index].selected = !newRows[index].selected;
       setRows(newRows);
@@ -446,8 +497,6 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
     }
     if (e.shiftKey) {
       window.getSelection()?.removeAllRanges();
-
-      console.log(lastSelectedRow, index);
 
       setRows((prevRows) => {
         if (lastSelectedRow >= 0) {
@@ -479,7 +528,6 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
       newRows[index].selected = true;
       return newRows;
     });
-    console.log('click');
   };
 
   const unSelectAllRows = (e: any) => {
@@ -604,7 +652,7 @@ const frameworks = [
   },
 ];
 
-function CustomProgramSearchDialog() {
+const CustomProgramSearchDialog = forwardRef((props, ref) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -666,7 +714,9 @@ function CustomProgramSearchDialog() {
             {Array(10)
               .fill(0)
               .map((_, index) => (
-                <div className='flex flex-col gap-3 pt-2 hover:bg-muted'>
+                <div
+                  className='flex flex-col gap-3 pt-2 hover:bg-muted'
+                  key={index}>
                   <div className='grid grid-cols-4 gap-2 max-w-full cursor-pointer'>
                     <ToolTipCustom tooltip=' Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das'>
                       <p className='text-sm truncate col-span-3'>
@@ -694,7 +744,7 @@ function CustomProgramSearchDialog() {
       </Dialog>
     </>
   );
-}
+});
 
 function CustomSearchComboBox({
   keyValuePairs,
@@ -755,7 +805,6 @@ export function CustomDialogForTime({
   time: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log('render');
 
   return (
     <>
@@ -868,10 +917,17 @@ function CustomContextMenuForEPG() {
           Next Tab
           <ContextMenuShortcut>⌘[</ContextMenuShortcut>
         </ContextMenuItem>
-        <ContextMenuItem inset disabled>
+        <ContextMenuItem inset>
           Previous Tab
           <ContextMenuShortcut>⌘]</ContextMenuShortcut>
         </ContextMenuItem>
+        <ContextMenuItem inset>
+          First Tab <ContextMenuShortcut>⌘shift[</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem inset>
+          Last Tab <ContextMenuShortcut>⌘shift]</ContextMenuShortcut>
+        </ContextMenuItem>
+
         <ContextMenuItem inset>Clear Tab</ContextMenuItem>
         <ContextMenuItem inset>
           Reload
