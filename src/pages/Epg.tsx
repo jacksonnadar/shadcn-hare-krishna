@@ -168,7 +168,7 @@ function CustomEpgCard({
       {...props}
       className={`w-44 h-60 ${
         type === 'new' ? 'bg-secondary/40' : 'bg-secondary'
-      } relative rounded-sm cursor-pointer transform hover:scale-105 transition duration-300`}>
+      } relative rounded-sm cursor-pointer transform hover:scale-105 transition duration-300 hover:z-10`}>
       {/* <CardHeader>
     <CardTitle>Notifications</CardTitle>
     <CardDescription>You have 3 unread messages.</CardDescription>
@@ -180,7 +180,7 @@ function CustomEpgCard({
               <Info className='h-4 w-4 text-primary' />
             </div>
           </HoverCardTrigger>
-          <HoverCardContent align='end' className='w-80'>
+          <HoverCardContent align='center' className='w-52'>
             <div className='flex justify-between space-x-4'>
               <div className='space-y-1'>
                 <h4 className='text-md font-semibold'>Epg for Aug to 12</h4>
@@ -336,14 +336,14 @@ function CustomNewEpgCard({ children }: any) {
             </Button>
           </PopoverTrigger>
           <PopoverContent className='w-auto p-0' align='start'>
-            {/* <Calendar
+            <Calendar
               initialFocus
               mode='range'
               defaultMonth={date?.from}
               selected={date}
               onSelect={setDate}
               numberOfMonths={2}
-            /> */}
+            />
           </PopoverContent>
         </Popover>
         <Label>EPG Name</Label>
