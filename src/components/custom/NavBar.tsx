@@ -1,6 +1,7 @@
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import logo from '../../assets/app-white-logo.png';
+import moment from 'moment';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,7 +36,7 @@ import {
   UserPlus,
   Users,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -63,10 +64,15 @@ import {
 import { AlertDialogHeader } from '../ui/alert-dialog';
 import { Label } from '@radix-ui/react-menubar';
 import { Input } from '../ui/input';
+import * as XLSX from 'xlsx';
+import DataContext from './appContext';
+import { DataContent } from '../../App';
 export default function NavBar() {
   const [currentTheme, setCurrentTheme] = useState('dark');
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const { dataContent, setDataContent } = useContext(DataContext);
   const handleDragOver = (e: any) => {
     e.preventDefault();
     setIsDraggingOver(true);
@@ -81,7 +87,7 @@ export default function NavBar() {
     setIsDraggingOver(false);
     const files = Array.from(e.dataTransfer.files);
     // Process the dropped files
-    console.log(files);
+    setFile(files.at(0) as any as File);
   };
   const setTheme = (theme: string) => {
     if (theme === 'dark') {
@@ -95,10 +101,66 @@ export default function NavBar() {
     }
   };
 
+  const onFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files!);
+    setFile(files.at(0) as any as File);
+  };
+
   useEffect(() => {
     const localTheme = localStorage.getItem('theme') ?? 'dark';
     setTheme(localTheme);
   }, []);
+
+  useEffect(() => {
+    if (file) {
+      console.log(file);
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const data = e.target?.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const json = XLSX.utils.sheet_to_json(sheet) as DataContent[];
+        const excelDateToJSDate = (serial: any) => {
+          const utc_days = Math.floor(serial - 25569);
+          const utc_value = utc_days * 86400;
+          const date_info = new Date(utc_value * 1000);
+          const fractional_day = serial - Math.floor(serial) + 0.0000001;
+          let total_seconds = Math.floor(86400 * fractional_day);
+          const seconds = total_seconds % 60;
+          total_seconds -= seconds;
+          const hours = Math.floor(total_seconds / (60 * 60));
+          const minutes = Math.floor(total_seconds / 60) % 60;
+          return new Date(
+            date_info.getFullYear(),
+            date_info.getMonth(),
+            date_info.getDate(),
+            hours,
+            minutes,
+            seconds
+          );
+        };
+        const content = json.map((item) => {
+          // console.log(item);
+          const dateTime = moment(excelDateToJSDate(item.Duration));
+          const durationInSeconds =
+            dateTime.hours() * 3600 +
+            dateTime.minutes() * 60 +
+            dateTime.seconds();
+
+          return {
+            ...item,
+            durationInSeconds,
+            Duration: dateTime.format('HH:mm:ss'),
+          };
+        });
+
+        setDataContent(content);
+      };
+      reader.readAsBinaryString(file);
+    }
+  }, [file]);
 
   return (
     <nav className='shadow border-b-2 h-14  flex justify-between w-screen px-5 py-2'>
@@ -230,6 +292,7 @@ export default function NavBar() {
                   <input
                     type='file'
                     className='absolute inset-0 opacity-0 z-10'
+                    onChange={onFileUpload}
                   />
                   <Upload className='w-3 h-3 mr-2' /> <span>Upload File</span>
                 </Button>

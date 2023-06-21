@@ -1,4 +1,11 @@
-import { ReactNode, useState, forwardRef, useRef } from 'react';
+import {
+  ReactNode,
+  useState,
+  forwardRef,
+  useRef,
+  useContext,
+  useEffect,
+} from 'react';
 import {
   Table,
   TableBody,
@@ -111,6 +118,8 @@ import {
   ScrollBar,
 } from '../components/ui/scroll-area';
 import { HotKeys } from 'react-hotkeys';
+import DataContext from '../components/custom/appContext';
+import { DataContent } from '../App';
 
 interface Row {
   startTime: string;
@@ -482,20 +491,20 @@ function CustomTab() {
 function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
   const [rows, setRows] = useState(epgRows);
   const [lastSelectedRow, setLastSelectedRow] = useState(-1);
-  const selectRow = (e: any, index: number) => {
+  const selectRow = (index: number, e?: any) => {
     //ctrl + click update rows to be selected
     //shift + click update rows to be selected
     //click update single row to be selected and un select all other rows
-    e.stopPropagation();
+    e?.stopPropagation();
     setLastSelectedRow(index);
-    if (e.ctrlKey) {
+    if (e?.ctrlKey) {
       const newRows = structuredClone(rows);
       newRows[index].selected = !newRows[index].selected;
       setRows(newRows);
 
       return;
     }
-    if (e.shiftKey) {
+    if (e?.shiftKey) {
       window.getSelection()?.removeAllRanges();
 
       setRows((prevRows) => {
@@ -541,12 +550,143 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
       return newRows;
     });
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const { getFilteredData } = useContext(DataContext);
+  const [categoryValue, setCategoryValue] = useState('');
+  const [subCategoryValue, setSubCategoryValue] = useState('');
+  const [speakersValue, setSpeakersValue] = useState('');
+  const [languageValue, setLanguageValue] = useState('');
+
+  // first 10
+
+  const [FilteredRows, setFilteredRows] = useState<DataContent[]>([]);
+
+  useEffect(() => {
+    setFilteredRows(getFilteredData({}));
+  }, []);
+
   return (
     <div className='p-5  w-[100vw]'>
       <main
         onClick={unSelectAllRows}
         className='border-2 p-5 pt-0 rounded-md w-full'>
         <ScrollAreaH className='pb-3'>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogContent className='w-[800px]'>
+              <AlertDialogHeader>
+                <DialogTitle>Search Program</DialogTitle>
+                <DialogDescription>
+                  Search program and add to the row{' '}
+                </DialogDescription>
+              </AlertDialogHeader>
+              <div className='grid grid-cols-2 gap-4'>
+                <CustomSearchComboBox
+                  searchLabel='Category'
+                  value={categoryValue}
+                  setValue={setCategoryValue}
+                  keyValuePairs={category.map((item) => ({
+                    value: item,
+                    label: item,
+                  }))}
+                />
+                <CustomSearchComboBox
+                  searchLabel='Sub Category'
+                  value={subCategoryValue}
+                  setValue={setSubCategoryValue}
+                  keyValuePairs={subCategory.map((item) => ({
+                    value: item,
+                    label: item,
+                  }))}
+                />
+                <CustomSearchComboBox
+                  searchLabel='Speaker'
+                  value={speakersValue}
+                  setValue={setSpeakersValue}
+                  keyValuePairs={speaker.map((item) => ({
+                    value: item,
+                    label: item,
+                  }))}
+                />
+                <CustomSearchComboBox
+                  searchLabel='Language'
+                  value={languageValue}
+                  setValue={setLanguageValue}
+                  keyValuePairs={language.map((item) => ({
+                    value: item,
+                    label: item,
+                  }))}
+                />
+                <div className='flex gap-3'>
+                  <Input
+                    placeholder='Duration'
+                    className='w-[60%]'
+                    type='tel'
+                  />
+                  <Select defaultValue='Seconds'>
+                    <SelectTrigger className=''>
+                      <SelectValue placeholder='Unit' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Unit</SelectLabel>
+                        <SelectItem value='Seconds'>Seconds</SelectItem>
+                        <SelectItem value='Minutes'>Minutes</SelectItem>
+                        <SelectItem value='Hours'>Hours</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <Separator />
+              <AlertDialogHeader>
+                <DialogTitle>Results Found</DialogTitle>
+              </AlertDialogHeader>
+
+              <ScrollArea
+                className=' max-h-60'
+                onScroll={console.log}
+                onScrollCapture={(e) => {
+                  if (
+                    (e.target as any).scrollHeight -
+                      (e.target as any).scrollTop -
+                      1 <
+                    (e.target as any).clientHeight
+                  ) {
+                    setFilteredRows((prev) => [
+                      ...prev,
+                      ...getFilteredData({}),
+                    ]);
+                  }
+                }}>
+                {FilteredRows.map((item, index) => (
+                  <div
+                    className='flex flex-col gap-3 pt-2 hover:bg-muted'
+                    key={item['Rec#']}>
+                    <div className='grid grid-cols-5 gap-2 max-w-full cursor-pointer'>
+                      <ToolTipCustom tooltip={item.FileName}>
+                        <p className='text-sm truncate col-span-4'>
+                          {item.FileName}
+                        </p>
+                      </ToolTipCustom>
+                      <p className='font-semibold text-sm truncate col-span-1 text-right pr-4'>
+                        {item['Duration']}
+                      </p>
+                    </div>
+                    <Separator />
+                  </div>
+                ))}
+              </ScrollArea>
+              <DialogFooter>
+                <Button
+                  type='submit'
+                  onClick={() => setIsOpen(false)}
+                  variant='destructive'>
+                  <XCircle className='w-4 h-4 mr-2' /> <span>Close</span>{' '}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <Table>
             <TableCaption>Epg table for Aug 10th</TableCaption>
             <TableHeader>
@@ -566,7 +706,8 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
             <TableBody>
               {rows.map((row, index) => (
                 <TableRow
-                  onClick={(e) => selectRow(e, index)}
+                  onClick={(e) => selectRow(index, e)}
+                  onContextMenu={(e) => selectRow(index)}
                   key={index}
                   className={cn(
                     index % 2 === 0 ? 'bg-secondary/20' : '',
@@ -591,7 +732,11 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                         <div className='truncate w-80'>{row.program}</div>
                       </ToolTipCustom>
                       <ToolTipCustom tooltip='Add Program'>
-                        <CustomProgramSearchDialog />
+                        <Button
+                          onClick={() => setIsOpen(true)}
+                          className='w-6 h-6 rounded-full p-0'>
+                          <Plus className='h-4 w-4' />
+                        </Button>
                       </ToolTipCustom>
                     </div>
                   </TableCell>
@@ -602,7 +747,11 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                         {row.filler}
                       </span>
                       <ToolTipCustom tooltip='Add Program'>
-                        <CustomProgramSearchDialog />
+                        <Button
+                          onClick={() => setIsOpen(true)}
+                          className='w-6 h-6 rounded-full p-0'>
+                          <Plus className='h-4 w-4' />
+                        </Button>
                       </ToolTipCustom>
                       {/* <Button className='w-6 h-6 rounded-full p-0'>
                         <Edit2 className='h-4 w-4' />
@@ -652,109 +801,75 @@ const frameworks = [
   },
 ];
 
-const CustomProgramSearchDialog = forwardRef((props, ref) => {
-  const [isOpen, setIsOpen] = useState(false);
+const category = [
+  'All',
+  'Talk',
+  'Kirtan',
+  'Recipe',
+  'Drama',
+  'Hare Krishna Culture',
+  'Aratis',
+  'Kids',
+  'Darshan',
+  'Quick Recipes',
+  'Abhay Charan',
+  'How I Came To Krishna Consciousness',
+  'Documentary',
+  'Wishes',
+  'Promo',
+  'Music Videos',
+  'Festival',
+];
+const subCategory = [
+  'All',
+  'Katha',
+  'Packaged',
+  'Series',
+  'Live',
+  'Satvik Rasoi',
+  'Kurma Das',
+  'Illustrated Stories',
+  'Talk',
+  'Naitik Kahaniya',
+  'Others',
+];
 
-  return (
-    <>
-      <Button
-        onClick={() => setIsOpen(true)}
-        className='w-6 h-6 rounded-full p-0'>
-        <Plus className='h-4 w-4' />
-      </Button>
+const speaker = ['All', 'Swami', 'Prabhuji', 'Mataji', 'Kids', 'NA'];
 
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className='w-[800px]'>
-          <AlertDialogHeader>
-            <DialogTitle>Search Program</DialogTitle>
-            <DialogDescription>
-              Search program and add to the row{' '}
-            </DialogDescription>
-          </AlertDialogHeader>
-          <div className='grid grid-cols-2 gap-4'>
-            <CustomSearchComboBox
-              searchLabel='Category'
-              keyValuePairs={frameworks}
-            />
-            <CustomSearchComboBox
-              searchLabel='Sub Category'
-              keyValuePairs={frameworks}
-            />
-            <CustomSearchComboBox
-              searchLabel='Speaker'
-              keyValuePairs={frameworks}
-            />
-            <CustomSearchComboBox
-              searchLabel='Language'
-              keyValuePairs={frameworks}
-            />
-            <div className='flex gap-3'>
-              <Input placeholder='Duration' className='w-[60%]' type='tel' />
-              <Select defaultValue='Seconds'>
-                <SelectTrigger className=''>
-                  <SelectValue placeholder='Unit' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Unit</SelectLabel>
-                    <SelectItem value='Seconds'>Seconds</SelectItem>
-                    <SelectItem value='Minutes'>Minutes</SelectItem>
-                    <SelectItem value='Hours'>Hours</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <Separator />
-          <AlertDialogHeader>
-            <DialogTitle>Results Found</DialogTitle>
-          </AlertDialogHeader>
-          {/* <CustomSearchComboBox /> */}
-          <ScrollArea className=' max-h-60'>
-            {Array(10)
-              .fill(0)
-              .map((_, index) => (
-                <div
-                  className='flex flex-col gap-3 pt-2 hover:bg-muted'
-                  key={index}>
-                  <div className='grid grid-cols-4 gap-2 max-w-full cursor-pointer'>
-                    <ToolTipCustom tooltip=' Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das'>
-                      <p className='text-sm truncate col-span-3'>
-                        Matrudin Vishesh - Sabse sundar stri Maa - Gauranga
-                        Priya Das
-                      </p>
-                    </ToolTipCustom>
-                    <p className='font-semibold text-sm truncate col-span-1 text-right'>
-                      00:12:00
-                    </p>
-                  </div>
-                  <Separator />
-                </div>
-              ))}
-          </ScrollArea>
-          <DialogFooter>
-            <Button
-              type='submit'
-              onClick={() => setIsOpen(false)}
-              variant='destructive'>
-              <XCircle className='w-4 h-4 mr-2' /> <span>Close</span>{' '}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-});
+const language = ['All', 'English', 'Hindi', 'NA'];
+
+// const CustomProgramSearchDialog = forwardRef((props, ref) => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const { dataContent } = useContext(DataContext);
+//   // first 10
+
+//   const FilteredRows = dataContent?.slice(0, 10);
+//   console.log(FilteredRows);
+
+//   return (
+//     <>
+//       <Button
+//         onClick={() => setIsOpen(true)}
+//         className='w-6 h-6 rounded-full p-0'>
+//         <Plus className='h-4 w-4' />
+//       </Button>
+//     </>
+//   );
+// });
 
 function CustomSearchComboBox({
   keyValuePairs,
   searchLabel,
+  value,
+  setValue,
 }: {
   keyValuePairs: { value: string; label: string }[];
   searchLabel: string;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -764,34 +879,43 @@ function CustomSearchComboBox({
           aria-expanded={open}
           className='w-full justify-between'>
           {value
-            ? keyValuePairs.find((keyValuePair) => keyValuePair.value === value)
-                ?.label
+            ? keyValuePairs.find(
+                (keyValuePair) =>
+                  keyValuePair.value.toLocaleLowerCase() ===
+                  value.toLocaleLowerCase()
+              )?.label
             : `${searchLabel}`}
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[225px] p-0'>
-        <Command>
+      <PopoverContent className='w-[225px] max-h-[25rem] overflow-auto'>
+        <Command
+          value={value}
+          onValueChange={(value) => {
+            setValue(value);
+          }}>
           <CommandInput placeholder={`Search ${searchLabel}...`} />
           <CommandEmpty>No {searchLabel} found.</CommandEmpty>
-          <CommandGroup>
-            {keyValuePairs.map((keyValuePair) => (
-              <CommandItem
-                key={keyValuePair.value}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? '' : currentValue);
-                  setOpen(false);
-                }}>
-                <Check
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    value === keyValuePair.value ? 'opacity-100' : 'opacity-0'
-                  )}
-                />
-                {keyValuePair.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <ScrollArea className='max-h-[20rem] h-[15rem]'>
+            <CommandGroup>
+              {keyValuePairs.map((keyValuePair) => (
+                <CommandItem
+                  key={keyValuePair.value}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue);
+                    setOpen(false);
+                  }}>
+                  <Check
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      value === keyValuePair.value ? 'opacity-100' : 'opacity-0'
+                    )}
+                  />
+                  {keyValuePair.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </ScrollArea>
         </Command>
       </PopoverContent>
     </Popover>
