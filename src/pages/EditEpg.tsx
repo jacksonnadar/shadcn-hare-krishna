@@ -39,6 +39,7 @@ import {
   Plus,
   PlusCircle,
   Save,
+  ShieldCloseIcon,
   Table2,
   Trash,
   X,
@@ -119,7 +120,21 @@ import {
 } from '../components/ui/scroll-area';
 import { HotKeys } from 'react-hotkeys';
 import DataContext from '../components/custom/appContext';
-import { DataContent } from '../App';
+import { DataContentRow, Type } from '../App';
+import debounce from 'lodash/debounce';
+import {
+  EpgRow,
+  defaultEpgData,
+  hhmmssAddition,
+  hhmmssSubtraction,
+  unitToSeconds,
+} from '../utility/utility';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '../components/ui/hover-card';
+import NavBar from '../components/custom/NavBar';
 
 interface Row {
   startTime: string;
@@ -164,205 +179,7 @@ function ToolTipCustom({
 }
 
 function CustomTab() {
-  const [rows, setRows] = useState([
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-    {
-      startTime: '00:00:00',
-      endTime: '00:00:00',
-      next: 'Next Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das Name 1 skdm odskmmsdfkm   kmksmdklsmdkf',
-      program: 'Matrudin Vishesh - Sabse sundar stri Maa - Gauranga Priya Das',
-      scrollDetails: 'Scroll Details',
-      fileName: 'File Name',
-      filler: '2 Fillers / 3 Promos',
-      timeRemaining: '00:00:00',
-      episodeTitle: 'EpisodsdfsdnkfsdnkfjsdkfkjsdfknsdjkfsjkdfjkeTitle',
-      starCast: 'Gauranga Priya Das',
-      scteOnFillers: 'Scte On Fillers',
-      selected: false,
-    },
-  ]);
+  const [rows, setRows] = useState(defaultEpgData);
 
   const [tabs, setTabs] = useState([
     {
@@ -428,67 +245,71 @@ function CustomTab() {
   };
 
   return (
-    <HotKeys keyMap={keyMap} handlers={handlers} unselectable='on'>
-      <Tabs value={tabValue} onValueChange={setTabValue} className='w-full'>
-        <div className='flex m-4 justify-between items-center gap-3'>
-          <div className='flex items-center gap-3'>
-            <TabsList className='flex'>
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  ref={tabRef}
-                  className='px-10'
-                  value={tab.value}
-                  key={tab.value}>
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            <Button className='min-w-[2rem] h-8 rounded-full p-0'>
-              <PlusCircle className='h-4 w-4' />
-            </Button>
-          </div>
+    <>
+      <NavBar />
 
-          <div className=''>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <div className='w-10 h-10 flex items-center justify-center rounded-full p-0 border border-input hover:bg-accent hover:text-accent-foreground'>
-                  <MoreVertical className='h-4 w-4' />
-                  <span className='sr-only'>Add</span>
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className='w-56'>
-                <DropdownMenuLabel>More Actions</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem inset>Clear Tab</DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Trash className='mr-2 h-4 w-4 text-red-600' />
-                    <span className='text-red-600'>Delete Tab</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CalendarDays className='mr-2 h-4 w-4 ' />
-                    <span className=''>Edit Date</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Plus className='mr-2 h-4 w-4 ' />
-                    <span className=''>Add New Tab</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+      <HotKeys keyMap={keyMap} handlers={handlers} unselectable='on'>
+        <Tabs value={tabValue} onValueChange={setTabValue} className='w-full'>
+          <div className='flex m-4 justify-between items-center gap-3'>
+            <div className='flex items-center gap-3'>
+              <TabsList className='flex'>
+                {tabs.map((tab) => (
+                  <TabsTrigger
+                    ref={tabRef}
+                    className='px-10'
+                    value={tab.value}
+                    key={tab.value}>
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              <Button className='min-w-[2rem] h-8 rounded-full p-0'>
+                <PlusCircle className='h-4 w-4' />
+              </Button>
+            </div>
+
+            <div className=''>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <div className='w-10 h-10 flex items-center justify-center rounded-full p-0 border border-input hover:bg-accent hover:text-accent-foreground'>
+                    <MoreVertical className='h-4 w-4' />
+                    <span className='sr-only'>Add</span>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className='w-56'>
+                  <DropdownMenuLabel>More Actions</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem inset>Clear Tab</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Trash className='mr-2 h-4 w-4 text-red-600' />
+                      <span className='text-red-600'>Delete Tab</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <CalendarDays className='mr-2 h-4 w-4 ' />
+                      <span className=''>Edit Date</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Plus className='mr-2 h-4 w-4 ' />
+                      <span className=''>Add New Tab</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
-        </div>
-        {tabs.map((tab) => (
-          <TabsContent value={tab.value} key={tab.value}>
-            <CustomEpgTable epgRows={rows} />
-          </TabsContent>
-        ))}
-      </Tabs>
-    </HotKeys>
+          {tabs.map((tab) => (
+            <TabsContent value={tab.value} key={tab.value}>
+              <CustomEpgTable epgRows={rows} />
+            </TabsContent>
+          ))}
+        </Tabs>
+      </HotKeys>
+    </>
   );
 }
 
-function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
+function CustomEpgTable({ epgRows }: { epgRows: EpgRow[] }) {
   const [rows, setRows] = useState(epgRows);
   const [lastSelectedRow, setLastSelectedRow] = useState(-1);
   const selectRow = (index: number, e?: any) => {
@@ -540,8 +361,6 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
   };
 
   const unSelectAllRows = (e: any) => {
-    //stop propagation
-
     setRows((prevRows) => {
       const newRows = prevRows.map((row) => {
         row.selected = false;
@@ -552,19 +371,161 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const [currentRowForProgramIndex, setCurrentRowForProgramIndex] = useState<
+    number | null
+  >(null);
+  const [currentRowForPromoFillerIndex, setCurrentRowForPromoFillerIndex] =
+    useState<number | null>(null);
   const { getFilteredData } = useContext(DataContext);
   const [categoryValue, setCategoryValue] = useState('');
   const [subCategoryValue, setSubCategoryValue] = useState('');
   const [speakersValue, setSpeakersValue] = useState('');
   const [languageValue, setLanguageValue] = useState('');
+  const [duration, setDuration] = useState({ value: '', unit: 'seconds' });
+  const [search, setSearch] = useState('');
+  const { dataContent } = useContext(DataContext);
+
+  const onSearchChange = debounce((e: any) => {
+    console.log(e.target.value);
+
+    setSearch(e.target.value);
+  }, 1000);
 
   // first 10
 
-  const [FilteredRows, setFilteredRows] = useState<DataContent[]>([]);
+  const [filteredRows, setFilteredRows] = useState<DataContentRow[]>([]);
 
   useEffect(() => {
-    setFilteredRows(getFilteredData({}));
-  }, []);
+    const data = getFilteredData({
+      filterOptions: {
+        Category: categoryValue,
+        SubCategory: subCategoryValue,
+        Language: languageValue,
+        Speaker: speakersValue,
+      },
+      duration: unitToSeconds(duration.unit, +duration.value),
+      search,
+      reFetch: true,
+    });
+    console.log(data);
+
+    setFilteredRows(data);
+  }, [
+    categoryValue,
+    subCategoryValue,
+    speakersValue,
+    languageValue,
+    duration.unit,
+    duration.value,
+    search,
+    dataContent.program,
+  ]);
+
+  const onScrollEnd = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    if (
+      (e.target as any).scrollHeight - (e.target as any).scrollTop - 1 <
+      (e.target as any).clientHeight
+    ) {
+      setFilteredRows((prev) => [
+        ...prev,
+        ...getFilteredData({
+          reFetch: false,
+          filterOptions: {
+            Category: categoryValue,
+            SubCategory: subCategoryValue,
+            Language: languageValue,
+            Speaker: speakersValue,
+          },
+          duration: unitToSeconds(duration.unit, +duration.value),
+          search,
+        }),
+      ]);
+    }
+  };
+
+  const addProgramToEpgRow = (
+    programId: string,
+    cast: string,
+    timeString: string
+  ) => {
+    const newRows = structuredClone(rows);
+    const timeRemaining = hhmmssSubtraction(
+      newRows[currentRowForProgramIndex!].timeRemaining,
+      timeString
+    );
+    newRows[currentRowForProgramIndex!].program = programId;
+    newRows[currentRowForProgramIndex!].starCast = cast;
+    newRows[currentRowForProgramIndex!].timeRemaining = timeRemaining;
+
+    setRows(newRows);
+    setCurrentRowForProgramIndex(null);
+  };
+  const selectFillerOrPromo = (data: DataContentRow, type: Type) => {
+    const newRows = structuredClone(rows);
+
+    const typeString = type === 'Promos' ? 'promos' : 'fillers';
+
+    newRows[currentRowForPromoFillerIndex!].filler[typeString].push(data);
+    const ids = [
+      ...new Set(
+        newRows[currentRowForPromoFillerIndex!].filler[typeString].map(
+          (item) => item['Rec#']
+        )
+      ),
+    ];
+    newRows[currentRowForPromoFillerIndex!].filler[typeString] = ids.map(
+      (id) =>
+        newRows[currentRowForPromoFillerIndex!].filler[typeString].find(
+          (item) => item['Rec#'] === id
+        )!
+    );
+    newRows[currentRowForPromoFillerIndex!].timeRemaining = hhmmssSubtraction(
+      newRows[currentRowForPromoFillerIndex!].timeRemaining,
+      data.Duration
+    );
+
+    setRows(newRows);
+  };
+
+  const deselectFillerOrPromo = (id: string) => {
+    const newRows = structuredClone(rows);
+
+    //remove from both fillers and promos if available
+
+    const fillerIndex = newRows[
+      currentRowForPromoFillerIndex!
+    ].filler.fillers.findIndex((item) => item['Rec#'] === id);
+    if (fillerIndex !== -1) {
+      newRows[currentRowForPromoFillerIndex!].timeRemaining = hhmmssAddition(
+        newRows[currentRowForPromoFillerIndex!].timeRemaining,
+        newRows[currentRowForPromoFillerIndex!].filler.fillers[fillerIndex]
+          .Duration
+      );
+      newRows[currentRowForPromoFillerIndex!].filler.fillers.splice(
+        fillerIndex,
+        1
+      );
+    }
+
+    const promoIndex = newRows[
+      currentRowForPromoFillerIndex!
+    ].filler.promos.findIndex((item) => item['Rec#'] === id);
+    if (promoIndex !== -1) {
+      newRows[currentRowForPromoFillerIndex!].timeRemaining = hhmmssAddition(
+        newRows[currentRowForPromoFillerIndex!].timeRemaining,
+        newRows[currentRowForPromoFillerIndex!].filler.promos[promoIndex]
+          .Duration
+      );
+      console.log(newRows[currentRowForPromoFillerIndex!].filler.promos);
+
+      newRows[currentRowForPromoFillerIndex!].filler.promos.splice(
+        promoIndex,
+        1
+      );
+    }
+
+    setRows(newRows);
+  };
 
   return (
     <div className='p-5  w-[100vw]'>
@@ -572,7 +533,9 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
         onClick={unSelectAllRows}
         className='border-2 p-5 pt-0 rounded-md w-full'>
         <ScrollAreaH className='pb-3'>
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <Dialog
+            open={currentRowForProgramIndex !== null ? true : false}
+            onOpenChange={(value) => setCurrentRowForProgramIndex(null)}>
             <DialogContent className='w-[800px]'>
               <AlertDialogHeader>
                 <DialogTitle>Search Program</DialogTitle>
@@ -622,17 +585,31 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                     placeholder='Duration'
                     className='w-[60%]'
                     type='tel'
+                    value={duration.value}
+                    onChange={(e) =>
+                      setDuration({
+                        ...duration,
+                        value: isNaN(+e.target.value)
+                          ? duration.value
+                          : e.target.value,
+                      })
+                    }
                   />
-                  <Select defaultValue='Seconds'>
+                  <Select
+                    defaultValue='seconds'
+                    value={duration.unit}
+                    onValueChange={(value) =>
+                      setDuration({ ...duration, unit: value })
+                    }>
                     <SelectTrigger className=''>
                       <SelectValue placeholder='Unit' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Unit</SelectLabel>
-                        <SelectItem value='Seconds'>Seconds</SelectItem>
-                        <SelectItem value='Minutes'>Minutes</SelectItem>
-                        <SelectItem value='Hours'>Hours</SelectItem>
+                        <SelectItem value='seconds'>Seconds</SelectItem>
+                        <SelectItem value='minutes'>Minutes</SelectItem>
+                        <SelectItem value='hours'>Hours</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -640,30 +617,32 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
               </div>
               <Separator />
               <AlertDialogHeader>
-                <DialogTitle>Results Found</DialogTitle>
+                <div className='flex justify-between items-center'>
+                  <DialogTitle className='w-44'>Results Found</DialogTitle>
+                  <Input
+                    placeholder='Search'
+                    // value={search}
+                    onChange={onSearchChange}
+                  />
+                </div>
               </AlertDialogHeader>
 
               <ScrollArea
-                className=' max-h-60'
+                className='h-60'
                 onScroll={console.log}
-                onScrollCapture={(e) => {
-                  if (
-                    (e.target as any).scrollHeight -
-                      (e.target as any).scrollTop -
-                      1 <
-                    (e.target as any).clientHeight
-                  ) {
-                    setFilteredRows((prev) => [
-                      ...prev,
-                      ...getFilteredData({}),
-                    ]);
-                  }
-                }}>
-                {FilteredRows.map((item, index) => (
+                onScrollCapture={onScrollEnd}>
+                {filteredRows.map((item, index) => (
                   <div
-                    className='flex flex-col gap-3 pt-2 hover:bg-muted'
+                    className='flex flex-col gap-3 pt-2 hover:bg-muted/20  cursor-pointer'
+                    onDoubleClick={() =>
+                      addProgramToEpgRow(
+                        item['Rec#'],
+                        item.Speaker,
+                        item.Duration
+                      )
+                    }
                     key={item['Rec#']}>
-                    <div className='grid grid-cols-5 gap-2 max-w-full cursor-pointer'>
+                    <div className='grid grid-cols-5 gap-2 max-w-full'>
                       <ToolTipCustom tooltip={item.FileName}>
                         <p className='text-sm truncate col-span-4'>
                           {item.FileName}
@@ -680,13 +659,25 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
               <DialogFooter>
                 <Button
                   type='submit'
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => setCurrentRowForProgramIndex(null)}
                   variant='destructive'>
                   <XCircle className='w-4 h-4 mr-2' /> <span>Close</span>{' '}
                 </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
+          <CustomFillerPromoDialog
+            selectFillerOrPromo={selectFillerOrPromo}
+            row={
+              currentRowForPromoFillerIndex !== null
+                ? rows[currentRowForPromoFillerIndex]
+                : null
+            }
+            currentRowForPromoFillerIndex={currentRowForPromoFillerIndex}
+            setCurrentRowForPromoFillerIndex={setCurrentRowForPromoFillerIndex}
+            deselectFillerOrPromo={deselectFillerOrPromo}
+          />
+
           <Table>
             <TableCaption>Epg table for Aug 10th</TableCaption>
             <TableHeader>
@@ -699,7 +690,7 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                 <TableHead>Fillers</TableHead>
                 <TableHead>Time</TableHead>
                 <TableHead>Scroll Details</TableHead>
-                <TableHead>Episode Title</TableHead>
+                {/* <TableHead>Episode Title</TableHead> */}
                 <TableHead>Cast</TableHead>
               </TableRow>
             </TableHeader>
@@ -710,8 +701,8 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                   onContextMenu={(e) => selectRow(index)}
                   key={index}
                   className={cn(
-                    index % 2 === 0 ? 'bg-secondary/20' : '',
-                    row.selected ? ' bg-secondary hover:bg-secondary/30' : ''
+                    index % 2 === 0 ? 'bg-secondary/30' : '',
+                    row.selected ? ' bg-secondary hover:bg-secondary' : ''
                   )}>
                   <TableCell>
                     <CustomDialogForTime
@@ -728,12 +719,28 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
               </TableCell> */}
                   <TableCell>
                     <div className='flex gap-2'>
-                      <ToolTipCustom tooltip={row.program}>
-                        <div className='truncate w-80'>{row.program}</div>
+                      <ToolTipCustom
+                        tooltip={
+                          [
+                            dataContent.program.find(
+                              (dataRow) => dataRow['Rec#'] === row.program
+                            ),
+                          ].map((item) => {
+                            const { FileName, Duration } = item ?? {};
+                            if (FileName && Duration)
+                              return `${FileName} (${Duration})`;
+                            return 'Please add a row by clicking the plus icon and double click on the row to add a program';
+                          })[0]
+                        }>
+                        <div className='truncate w-80'>
+                          {dataContent.program.find(
+                            (dataRow) => dataRow['Rec#'] === row.program
+                          )?.FileName ?? ''}
+                        </div>
                       </ToolTipCustom>
                       <ToolTipCustom tooltip='Add Program'>
                         <Button
-                          onClick={() => setIsOpen(true)}
+                          onClick={() => setCurrentRowForProgramIndex(index)}
                           className='w-6 h-6 rounded-full p-0'>
                           <Plus className='h-4 w-4' />
                         </Button>
@@ -743,12 +750,49 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                   {/* <TableCell>{row.fileName}</TableCell> */}
                   <TableCell className=''>
                     <div className='flex gap-2 items-center min-w-[12rem]'>
-                      <span className='flex gap-1 bg-muted p-2 rounded-md'>
-                        {row.filler}
-                      </span>
-                      <ToolTipCustom tooltip='Add Program'>
+                      <HoverCard>
+                        <HoverCardTrigger asChild>
+                          <span className='flex gap-1 bg-muted p-2 rounded-md'>
+                            {row.filler.fillers.length +
+                              ' Fillers / ' +
+                              row.filler.promos.length +
+                              ' Promos'}
+                          </span>
+                        </HoverCardTrigger>
+                        <HoverCardContent side='bottom' className='w-80'>
+                          <div className='flex justify-between space-x-4'>
+                            <div className='space-y-1'>
+                              <h4 className='text-lg font-semibold'>Fillers</h4>
+                              {row.filler.fillers.map((item, index) => (
+                                <p className='text-sm'>
+                                  <b>({item['Rec#']})</b> {item.FileName}{' '}
+                                  {item.Duration}
+                                </p>
+                              ))}
+                              {row.filler.fillers.length === 0 && (
+                                <p className='text-sm'>No Fillers</p>
+                              )}
+
+                              <h4 className='text-lg font-semibold'>Promos</h4>
+                              {row.filler.promos.map((item, index) => (
+                                <p className='text-sm'>
+                                  <b>({item['Rec#']})</b> {item.FileName}{' '}
+                                  {item.Duration}
+                                </p>
+                              ))}
+                              {row.filler.promos.length === 0 && (
+                                <p className='text-sm'>No Promos</p>
+                              )}
+                            </div>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
+
+                      <ToolTipCustom tooltip='Add Fillers / Promo'>
                         <Button
-                          onClick={() => setIsOpen(true)}
+                          onClick={() =>
+                            setCurrentRowForPromoFillerIndex(index)
+                          }
                           className='w-6 h-6 rounded-full p-0'>
                           <Plus className='h-4 w-4' />
                         </Button>
@@ -762,11 +806,11 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
                   <TableCell>
                     <Input className='w-40 py-0' />
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <ToolTipCustom tooltip={row.episodeTitle}>
                       <div className='truncate w-32'>{row.episodeTitle}</div>
                     </ToolTipCustom>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>{row.starCast}</TableCell>
                 </TableRow>
               ))}
@@ -778,31 +822,249 @@ function CustomEpgTable({ epgRows }: { epgRows: Row[] }) {
   );
 }
 
-const frameworks = [
-  {
-    value: 'next.js',
-    label: 'Next.js',
-  },
-  {
-    value: 'sveltekit',
-    label: 'SvelteKit',
-  },
-  {
-    value: 'nuxt.js',
-    label: 'Nuxt.js',
-  },
-  {
-    value: 'remix',
-    label: 'Remix',
-  },
-  {
-    value: 'astro',
-    label: 'Astro',
-  },
-];
+const CustomFillerPromoDialog = ({
+  currentRowForPromoFillerIndex,
+  setCurrentRowForPromoFillerIndex,
+  row,
+  selectFillerOrPromo,
+  deselectFillerOrPromo,
+}: {
+  currentRowForPromoFillerIndex: number | null;
+  setCurrentRowForPromoFillerIndex: React.Dispatch<
+    React.SetStateAction<number | null>
+  >;
+  row: EpgRow | null;
+  deselectFillerOrPromo: (id: string) => void;
+  selectFillerOrPromo: (id: DataContentRow, type: Type) => void;
+}) => {
+  const [languageValue, setLanguageValue] = useState('');
+  const [duration, setDuration] = useState({ value: '', unit: 'seconds' });
+  const [search, setSearch] = useState('');
+  const [type, setType] = useState<'Fillers' | 'Promos'>('Fillers');
 
+  const [filteredRows, setFilteredRows] = useState<DataContentRow[]>([]);
+
+  const onSearchChange = debounce((e: any) => {
+    console.log(e.target.value);
+
+    setSearch(e.target.value);
+  }, 1000);
+
+  const checkIfSelected = (id: string) => {
+    if (row?.filler.fillers.find((row) => row['Rec#'] === id)) return true;
+    if (row?.filler.promos.find((row) => row['Rec#'] === id)) return true;
+    return false;
+  };
+
+  const { getFilteredFillerPromoData } = useContext(DataContext);
+
+  const onScrollEnd = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    if (
+      (e.target as any).scrollHeight - (e.target as any).scrollTop - 1 <
+      (e.target as any).clientHeight
+    ) {
+      console.log('end reached');
+      const data = getFilteredFillerPromoData({
+        Language: languageValue,
+        duration: +duration.value,
+        search,
+        type,
+        reFetch: false,
+      });
+
+      console.log(data);
+
+      setFilteredRows((prev) => [...prev, ...data]);
+    }
+  };
+
+  useEffect(() => {
+    const data = getFilteredFillerPromoData({
+      Language: languageValue,
+      duration: unitToSeconds(duration.unit, +duration.value),
+      search,
+      type,
+      reFetch: true,
+    });
+    setFilteredRows(data);
+  }, [
+    languageValue,
+    duration.unit,
+    duration.value,
+    search,
+    type,
+    getFilteredFillerPromoData,
+  ]);
+
+  return (
+    <Dialog
+      open={currentRowForPromoFillerIndex !== null ? true : false}
+      onOpenChange={() => setCurrentRowForPromoFillerIndex(null)}>
+      <DialogContent className='w-[800px]'>
+        <AlertDialogHeader>
+          <DialogTitle>
+            Search Filler / Promo - {row?.timeRemaining ?? ''}
+          </DialogTitle>
+          <DialogDescription>
+            Search Filler and Promo and add to the row{' '}
+          </DialogDescription>
+        </AlertDialogHeader>
+        <div className='grid grid-cols-2 gap-4'>
+          {/* <CustomSearchComboBox
+            searchLabel='Language'
+            value={languageValue}
+            setValue={setLanguageValue}
+            keyValuePairs={language.map((item) => ({
+              value: item,
+              label: item,
+            }))}
+          /> */}
+          <Select
+            defaultValue='Fillers'
+            value={type}
+            onValueChange={(value) => setType(value as Type)}>
+            <SelectTrigger className=''>
+              <SelectValue placeholder='Fillers' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Type</SelectLabel>
+                <SelectItem value='Fillers'>Fillers</SelectItem>
+                <SelectItem value='Promos'>Promos</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <div className='flex gap-3'>
+            <Input
+              placeholder='Duration'
+              className='w-[60%]'
+              type='tel'
+              value={duration.value}
+              onChange={(e) =>
+                setDuration({
+                  ...duration,
+                  value: isNaN(+e.target.value)
+                    ? duration.value
+                    : e.target.value,
+                })
+              }
+            />
+            <Select
+              defaultValue='seconds'
+              value={duration.unit}
+              onValueChange={(value) =>
+                setDuration({ ...duration, unit: value })
+              }>
+              <SelectTrigger className=''>
+                <SelectValue placeholder='Unit' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Unit</SelectLabel>
+                  <SelectItem value='seconds'>Seconds</SelectItem>
+                  <SelectItem value='minutes'>Minutes</SelectItem>
+                  <SelectItem value='hours'>Hours</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <Separator />
+        <AlertDialogHeader>
+          <div className='flex justify-between items-center'>
+            <DialogTitle className='w-44'>Results Found</DialogTitle>
+            <Input
+              placeholder='Search'
+              // value={search}
+              onChange={onSearchChange}
+            />
+          </div>
+        </AlertDialogHeader>
+
+        <div className='flex flex-col w-full gap-2 flex-wrap text-primary-foreground'>
+          {(row?.filler?.fillers?.length ?? 0) > 0 && (
+            <h2 className='text-primary text-lg text'>Fillers</h2>
+          )}
+          <div className='flex flex-wrap gap-2'>
+            {row?.filler?.fillers.map((item) => (
+              <div
+                key={item['Rec#']}
+                className='flex items-center gap-2 bg-gray-200 rounded-full px-2 py-1 cursor-pointer'>
+                <p className='text-sm'>{item['Rec#']}</p>
+                <XCircle
+                  className='w-4 h-4'
+                  onClick={() => deselectFillerOrPromo(item['Rec#'])}
+                />
+              </div>
+            ))}
+          </div>
+          {(row?.filler?.promos.length ?? 0) > 0 && (
+            <Separator className='mt-1' />
+          )}
+          {(row?.filler?.promos.length ?? 0) > 0 && (
+            <h2 className='text-primary text-lg text'>Promos</h2>
+          )}
+          <div className='flex flex-wrap gap-2'>
+            {row?.filler?.promos.map((item) => (
+              <div
+                key={item['Rec#']}
+                className='flex items-center gap-2 bg-gray-200 rounded-full px-2 py-1 cursor-pointer'>
+                <p className='text-sm'>{item['Rec#']}</p>
+                <XCircle
+                  className='w-4 h-4'
+                  onClick={() => deselectFillerOrPromo(item['Rec#'])}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <ScrollArea
+          className='h-60'
+          onScroll={console.log}
+          onScrollCapture={onScrollEnd}>
+          {filteredRows.map((item, index) => {
+            const isSelected = checkIfSelected(item['Rec#']);
+            return (
+              <div
+                className={cn(
+                  'flex flex-col gap-3 pt-2 hover:bg-muted/20 cursor-pointer select-none',
+                  isSelected ? 'bg-muted hover:bg-muted' : ''
+                )}
+                onDoubleClick={() =>
+                  isSelected
+                    ? deselectFillerOrPromo(item['Rec#'])
+                    : selectFillerOrPromo(item, type)
+                }
+                key={item['Rec#']}>
+                <div className='grid grid-cols-5 gap-2 max-w-full'>
+                  <ToolTipCustom tooltip={item.FileName}>
+                    <p className='text-sm truncate col-span-4'>
+                      {item.FileName}
+                    </p>
+                  </ToolTipCustom>
+                  <p className='font-semibold text-sm truncate col-span-1 text-right pr-4'>
+                    {item['Duration']}
+                  </p>
+                </div>
+                <Separator />
+              </div>
+            );
+          })}
+        </ScrollArea>
+        <DialogFooter>
+          <Button
+            type='submit'
+            onClick={() => setCurrentRowForPromoFillerIndex(null)}
+            variant='destructive'>
+            <XCircle className='w-4 h-4 mr-2' /> <span>Close</span>{' '}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 const category = [
-  'All',
   'Talk',
   'Kirtan',
   'Recipe',
@@ -821,7 +1083,6 @@ const category = [
   'Festival',
 ];
 const subCategory = [
-  'All',
   'Katha',
   'Packaged',
   'Series',
@@ -834,9 +1095,9 @@ const subCategory = [
   'Others',
 ];
 
-const speaker = ['All', 'Swami', 'Prabhuji', 'Mataji', 'Kids', 'NA'];
+const speaker = ['Swami', 'Prabhuji', 'Mataji', 'Kids', 'NA'];
 
-const language = ['All', 'English', 'Hindi', 'NA'];
+const language = ['English', 'Hindi', 'NA'];
 
 // const CustomProgramSearchDialog = forwardRef((props, ref) => {
 //   const [isOpen, setIsOpen] = useState(false);
@@ -883,7 +1144,7 @@ function CustomSearchComboBox({
                 (keyValuePair) =>
                   keyValuePair.value.toLocaleLowerCase() ===
                   value.toLocaleLowerCase()
-              )?.label
+              )?.label ?? searchLabel
             : `${searchLabel}`}
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
@@ -892,12 +1153,28 @@ function CustomSearchComboBox({
         <Command
           value={value}
           onValueChange={(value) => {
+            if (value.toUpperCase() === searchLabel.toUpperCase())
+              return setValue('');
             setValue(value);
           }}>
           <CommandInput placeholder={`Search ${searchLabel}...`} />
           <CommandEmpty>No {searchLabel} found.</CommandEmpty>
           <ScrollArea className='max-h-[20rem] h-[15rem]'>
             <CommandGroup>
+              <CommandItem
+                onSelect={(currentValue) => {
+                  setValue('');
+                  setOpen(false);
+                }}>
+                <Check
+                  className={cn(
+                    'mr-2 h-4 w-4',
+                    value === '' ? 'opacity-100' : 'opacity-0'
+                  )}
+                />
+                {searchLabel}
+              </CommandItem>
+
               {keyValuePairs.map((keyValuePair) => (
                 <CommandItem
                   key={keyValuePair.value}
@@ -908,7 +1185,10 @@ function CustomSearchComboBox({
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      value === keyValuePair.value ? 'opacity-100' : 'opacity-0'
+                      value.toLocaleLowerCase() ===
+                        keyValuePair.value.toLocaleLowerCase()
+                        ? 'opacity-100'
+                        : 'opacity-0'
                     )}
                   />
                   {keyValuePair.label}

@@ -61,91 +61,96 @@ import {
 } from '../components/ui/hover-card';
 import { Badge } from '../components/ui/badge';
 import { DateRange } from 'react-day-picker';
+import NavBar from '../components/custom/NavBar';
 
 export default function Epg() {
   return (
-    <div className='h-full w-full px-36 py-10 flex flex-col gap-6 max-w-full '>
-      <div>
-        <h1 className='text-xl pb-4'>New EPG & Recent</h1>
-        <div className='flex gap-4  flex-wrap'>
-          <CustomEpgCard
-            type='new'
-            title='New EPG'
-            description=' Will create a new Epg to start working'
-            Icon={Plus}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
+    <>
+      <NavBar />
+
+      <div className='h-full w-full px-36 py-10 flex flex-col gap-6 max-w-full '>
+        <div>
+          <h1 className='text-xl pb-4'>New EPG & Recent</h1>
+          <div className='flex gap-4  flex-wrap'>
+            <CustomEpgCard
+              type='new'
+              title='New EPG'
+              description=' Will create a new Epg to start working'
+              Icon={Plus}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+          </div>
+        </div>
+        <Separator />
+        <div>
+          <div className='flex justify-between'>
+            <h1 className='text-xl pb-4'>All EPGS</h1>
+            <Input className='w-60' placeholder='Search' />
+          </div>
+          <div className='flex gap-4 flex-wrap pt-3'>
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+            <CustomEpgCard
+              title='EPG for 4th to 20th AUG'
+              description='This was last edited on 20th Aug 2021'
+              Icon={File}
+            />
+          </div>
         </div>
       </div>
-      <Separator />
-      <div>
-        <div className='flex justify-between'>
-          <h1 className='text-xl pb-4'>All EPGS</h1>
-          <Input className='w-60' placeholder='Search' />
-        </div>
-        <div className='flex gap-4 flex-wrap pt-3'>
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-          <CustomEpgCard
-            title='EPG for 4th to 20th AUG'
-            description='This was last edited on 20th Aug 2021'
-            Icon={File}
-          />
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -296,8 +301,8 @@ function CustomEpgCardWithMenu({ children }: any) {
 
 function CustomNewEpgCard({ children }: any) {
   const [date, setDate] = useState<any>({
-    from: new Date(2023, 0, 20),
-    to: new Date(2023, 0, 21),
+    from: new Date(),
+    to: new Date().setDate(new Date().getDate() + 1),
   });
 
   return (
